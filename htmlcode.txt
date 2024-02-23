@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js" type="text/javascript"></script>
+</head>
+<body>
+
+    <input type="radio" id="red" name="color" value="red">
+    <label for="red">Red</label><br>
+
+    <input type="radio" id="green" name="color" value="green">
+    <label for="green">Green</label><br>
+
+    <input type="radio" id="blue" name="color" value="blue">
+    <label for="blue">Blue</label><br>
+
+    <script>
+        var client = new Paho.MQTT.Client("1237ffec90fb466d9c385b4f40174429.s1.eu.hivemq.cloud", 8884, "clientId" + new Date().getTime());
+        client.connect({ useSSL: true, userName: "Chelsea", password: "Chelsea@746", onSuccess: () => client.subscribe("Task3.3") });
+
+        document.getElementsByName('color').forEach(radio => {
+            radio.addEventListener('change', function() {
+                var message = new Paho.MQTT.Message(this.value);
+                message.destinationName = "Task3.3";
+                client.send(message);
+            });
+        });
+    </script>
+
+</body>
+</html>
